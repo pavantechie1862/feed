@@ -1,0 +1,22 @@
+.main-container {
+  height: 100vh;
+  display: flex;
+}
+
+.user-bio {
+  background-color: red;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.feed {
+  background-color: green;
+  overflow-y: auto;
+  flex-grow: 3;
+}
+
+.friend-suggetion {
+  background-color: yellow;
+  overflow-y: auto;
+  flex-grow: 1;
+}

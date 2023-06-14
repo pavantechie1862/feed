@@ -1,0 +1,32 @@
+body {
+  box-sizing: border-box;
+}
+
+ul {
+  list-style-type: none;
+}
+
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+p {
+  font-size: 8px;
+}
+ul {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+li {
+  list-style: none;
+}
+
+p {
+  display: block;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}

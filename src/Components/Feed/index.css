@@ -1,0 +1,34 @@
+.post-item {
+  background-color: #f8f8f8;
+  max-width: 600px;
+  color: #838487;
+  font-weight: 600;
+  font-family: var(--chakra-fonts-body);
+}
+
+.posted-content {
+  width: 100%;
+  min-height: 300px;
+}
+
+.about-post-container {
+  padding: 20px;
+  display: flex;
+}
+
+.username {
+  color: #70b5e0;
+  font-weight: bold;
+}
+
+.following-status {
+  color: #a0c762;
+  font-weight: normal;
+  margin-left: 10px;
+}
+
+.post-header {
+  display: flex;
+  background-color: red;
+  width: 100%;
+}
