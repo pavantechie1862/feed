@@ -1,22 +1,78 @@
 .main-container {
   height: 100vh;
-  display: flex;
+  background-color: #000;
 }
 
 .user-bio {
-  background-color: red;
   overflow-y: auto;
   flex-grow: 1;
+  padding: 10px;
 }
 
 .feed {
-  background-color: green;
-  overflow-y: auto;
-  flex-grow: 3;
-}
-
-.friend-suggetion {
-  background-color: yellow;
   overflow-y: auto;
   flex-grow: 1;
 }
+
+.friend-suggetions {
+  overflow-y: auto;
+  flex-grow: 1;
+  padding: 10px;
+  min-width: 450px;
+}
+
+.user-bio::-webkit-scrollbar,
+.feed::-webkit-scrollbar,
+.friend-suggetions::-webkit-scrollbar,
+.main-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
+/* //* Tab view */
+.tab-view {
+  display: flex;
+  height: 100%;
+}
+
+/* Screen view */
+.screen-view {
+  display: flex;
+  height: 100%;
+}
+
+/* //*Nav bar stylings */
+.nav-menu-mobile {
+  width: 100%;
+}
+
+.nav-menu-list-mobile {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 100px;
+  background-color: #000;
+  flex: 1;
+  list-style-type: none;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
+}
+
+.nav-menu-item-mobile {
+  margin: 0px;
+  cursor: pointer;
+}
+
+.nav-bar-icon {
+  width: 24px;
+  height: 30px;
+  font-weight: bold;
+  color: #f0f8ff;
+}
+
+/* //* styling in mobile view */
+
+/* .active-component-container {
+  
+} */

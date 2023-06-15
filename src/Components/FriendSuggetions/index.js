@@ -2,10 +2,10 @@ import "./index.css";
 
 const UserProfile = (props) => {
   const { userDetails, addUser } = props;
-  const { imageUrl, name, uniqueNo } = userDetails;
+  const { imageUrl, name, id } = userDetails;
 
   const handleClickEvent = () => {
-    addUser(uniqueNo);
+    addUser(id);
   };
 
   return (
@@ -13,9 +13,17 @@ const UserProfile = (props) => {
       <img src={imageUrl} className="profile-pic" alt="profile-pic" />
       <div className="user-details-container">
         <h1 className="user-name"> {name} </h1>
-        <button type="button" onClick={handleClickEvent}>
-          add user
-        </button>
+        {!userDetails.isFriend && (
+          <button
+            type="button"
+            onClick={handleClickEvent}
+            className="connection-status"
+          >
+            add user
+          </button>
+        )}
+
+        {userDetails.isFriend && <p className="connection-status">Added</p>}
       </div>
     </li>
   );
@@ -24,26 +32,26 @@ const UserProfile = (props) => {
 //*********************** */
 
 const FriendSuggetions = (props) => {
-  const { userList } = props;
-
+  const { userList, userAdded } = props;
   const addUser = (id) => {
-    console.log("This user is added");
-    console.log(id);
+    userAdded(id);
   };
 
   return (
-    <>
-      <h1 className="title">Users List</h1>
-      <ul className="suggetions-list">
-        {userList.map((eachUser) => (
-          <UserProfile
-            userDetails={eachUser}
-            key={eachUser.uniqueNo}
-            addUser={addUser}
-          />
-        ))}
-      </ul>
-    </>
+    <div className="friends-suggetion-container">
+      <div className="suggetion-section">
+        <p className="user-list-text">Who to Follow</p>
+        <ul className="suggetions-list">
+          {userList.map((eachUser) => (
+            <UserProfile
+              userDetails={eachUser}
+              key={eachUser.id}
+              addUser={addUser}
+            />
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 };
 

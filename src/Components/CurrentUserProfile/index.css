@@ -1,0 +1,33 @@
+.current-user-container {
+  background-color: #242526;
+  padding: 40px 20px;
+  display: flex;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.current-user-details {
+  color: white;
+}
+
+.current-username {
+  text-transform: capitalize;
+  font-weight: 600;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.current-user-profile {
+  height: 80px;
+  width: 80px;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+.bio-toggle-btn {
+  color: white;
+  border: 1px solid white;
+  padding: 4px 10px;
+  margin-top: 10px;
+  border-radius: 4px;
+}

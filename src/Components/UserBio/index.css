@@ -1,0 +1,36 @@
+.bio-content {
+  background-color: #242526;
+  border-radius: 10px;
+  color: #d8dade;
+  padding: 14px 30px;
+  height: 100%;
+}
+
+.bio-heading {
+  margin-bottom: 20px;
+}
+
+.add-bio-btn {
+  border: 0px;
+  background-color: #4e4f50;
+  color: #fff;
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  outline: none;
+}
+
+.bio-icon {
+  color: #8c939d;
+  margin: 6px 10px 0px 10px;
+}
+
+.bio-item {
+  margin: 10px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.bio-highlighted {
+  font-weight: 500;
+}
