@@ -13,7 +13,7 @@ p {
   max-width: 600px;
   font-weight: 600;
   color: #939496;
-  margin: 10px auto;
+  margin-bottom: 20px;
 }
 
 .posted-content {
@@ -29,6 +29,7 @@ p {
 .username {
   color: #70b5e0;
   font-weight: bold;
+  margin-right: 5px;
 }
 
 .following-status {

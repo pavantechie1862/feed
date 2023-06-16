@@ -1,10 +1,16 @@
 import "./index.css";
 import { AiTwotoneLike, AiTwotoneDislike } from "react-icons/ai";
-
+import { currentUserData } from "../../database";
+import { Link } from "react-router-dom";
 const Comment = (props) => {
   const { commentItem } = props;
-  const { commentId, commentedProfile, commentText, commentorName } =
-    commentItem;
+  const {
+    commentId,
+    commentedProfile,
+    commentText,
+    commentorName,
+    commentorId,
+  } = commentItem;
   return (
     <li className="comment-item">
       <img
@@ -13,37 +19,45 @@ const Comment = (props) => {
         className="commentor-profile profile-pic"
       />
       <p className="comment-text">
-        <span className="username">{commentorName}</span> {commentText}
+        <Link to={`/user/${commentorId}`} className="link">
+          <span className="username">{commentorName}</span>
+        </Link>
+        {commentText}
       </p>
     </li>
   );
 };
 
 const PostItem = (props) => {
-  const { each, handleLikeEvent, handleDisLikeEvent, handleComment } = props;
-
   const {
-    id,
-    postedBy,
+    eachPost,
+    userDetails,
+    handleLikeEvent,
+    handleDisLikeEvent,
+    handleComment,
+  } = props;
+
+  const { userId, imageUrl, name, isFriend } = userDetails;
+  const {
+    postId,
+    postedById,
     postedContent,
     postedType,
-    postedByProfile,
     timeLine,
     postDescription,
     likes,
     disLikes,
     currentUserLiked,
     currentUserDisliked,
-    currentUserFollowing,
     comments,
-  } = each;
+  } = eachPost;
 
-  const likeTriggered = () => handleLikeEvent(id);
-  const disLikeTriggered = () => handleDisLikeEvent(id);
+  const likeTriggered = () => handleLikeEvent(userId, postId);
+  const disLikeTriggered = () => handleDisLikeEvent(userId, postId);
 
   const onchangingComment = (event) => {
     if (event.key === "Enter") {
-      handleComment(id, event.target.value);
+      handleComment(userId, postId, event.target.value);
       event.target.value = "";
     }
   };
@@ -56,19 +70,19 @@ const PostItem = (props) => {
       {postedType === "IMAGE" && (
         <img
           src={postedContent}
-          alt={`img-posted-by-${postedBy}`}
+          alt={`img-posted-by-${postedById}`}
           className="posted-content"
         />
       )}
 
       {postedType !== "IMAGE" && (
-        <video src="cartoon.mp4" controls className="posted-content" />
+        <video src={postedContent} controls className="posted-content" />
       )}
 
       <div className="about-post-container">
         <div>
           <img
-            src={`${postedByProfile}`}
+            src={`${imageUrl}`}
             alt="profile-avatar"
             className="posted-by-profile profile-pic"
           />
@@ -77,12 +91,12 @@ const PostItem = (props) => {
           <div className="post-header">
             <div className="">
               <p className="username">
-                {postedBy}
+                {name}
                 <span className="following-status">
-                  {currentUserFollowing ? "Following" : "Not Following"}
+                  {isFriend ? "Following" : "Not Following"}
                 </span>
               </p>
-              <p className="posted-time">{timeLine}</p>
+              <p className="posted-time">Posted {timeLine} minutes ago</p>
             </div>
             <div className="like-dislike-container">
               <button
@@ -103,14 +117,13 @@ const PostItem = (props) => {
           </div>
           <p className="posted-discription">{postDescription}</p>
           <ul className="comments-container">
-            {comments.length > 0 &&
-              comments.map((eachComment) => (
-                <Comment commentItem={eachComment} key={eachComment.id} />
-              ))}
+            {comments.map((eachComment) => (
+              <Comment commentItem={eachComment} key={eachComment.commentId} />
+            ))}
 
             <li className="comment-item" key="default">
               <img
-                src="current-user.jpg"
+                src={currentUserData.profilePic}
                 alt="commentor-avatar"
                 className="commentor-profile profile-pic"
               />
@@ -129,23 +142,41 @@ const PostItem = (props) => {
 };
 
 const Feed = (props) => {
-  const { posts, increaseLikeCount, increaseDisLikeCount, addComment } = props;
-
-  const handleLikeEvent = (id) => increaseLikeCount(id);
-  const handleDisLikeEvent = (id) => increaseDisLikeCount(id);
-  const handleComment = (id, comment) => addComment(id, comment);
+  const { database, increaseLikeCount, increaseDisLikeCount, addComment } =
+    props;
+  const handleLikeEvent = (userid, postid) => increaseLikeCount(userid, postid);
+  const handleDisLikeEvent = (userid, postid) =>
+    increaseDisLikeCount(userid, postid);
+  const handleComment = (userid, postid, comment) =>
+    addComment(userid, postid, comment);
 
   return (
     <ul className="feed-container">
-      {posts.map((each) => (
-        <PostItem
-          each={each}
-          key={each.id}
-          handleLikeEvent={handleLikeEvent}
-          handleDisLikeEvent={handleDisLikeEvent}
-          handleComment={handleComment}
-        />
-      ))}
+      {
+        database.length > 0 &&
+          database.map((eachUserDetails) =>
+            eachUserDetails.posts.map((eachPost) => (
+              <PostItem
+                key={eachPost.postId}
+                eachPost={eachPost}
+                userDetails={eachUserDetails}
+                handleLikeEvent={handleLikeEvent}
+                handleDisLikeEvent={handleDisLikeEvent}
+                handleComment={handleComment}
+              />
+            ))
+          )
+
+        // database.map((each) => (
+        //   <PostItem
+        //     key={each.id}
+        //     each={each}
+        //     handleLikeEvent={handleLikeEvent}
+        //     handleDisLikeEvent={handleDisLikeEvent}
+        //     handleComment={handleComment}
+        //   />
+        // ))
+      }
     </ul>
   );
 };

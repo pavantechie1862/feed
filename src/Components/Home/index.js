@@ -3,12 +3,13 @@ import Feed from "../Feed";
 import UserBio from "../UserBio";
 import FriendSuggetions from "../FriendSuggetions";
 import CurrentUserProfile from "../CurrentUserProfile";
-import { usersList, feed } from "../../utils";
 import { v4 as uuidv4 } from "uuid";
-
 import { VscRequestChanges } from "react-icons/vsc";
 import { FaRegUserCircle } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
 import { MdDynamicFeed } from "react-icons/md";
+import { DB } from "../../database";
+import { currentUserData } from "../../database";
 import "./index.css";
 
 const displayContent = {
@@ -18,8 +19,7 @@ const displayContent = {
 };
 
 const Home = () => {
-  const [listOfUsers, setlistOfUsers] = useState(usersList);
-  const [posts, setPosts] = useState(feed);
+  const [database, setDatabase] = useState(DB);
   const [activeComponent, setActiveComponent] = useState(
     displayContent.displayFeed
   );
@@ -48,115 +48,124 @@ const Home = () => {
     setActiveComponent(displayContent.displaySuggetions);
   };
 
-  const increaseLikeCount = (id) => {
-    const updated = posts.map((each) => {
-      if (each.id === id) {
-        if (each.currentUserLiked) {
-          if (each.currentUserDisliked) {
-            return {
-              ...each,
-              currentUserDisliked: false,
-              disLikes: each.disLikes - 1,
-              currentUserLiked: false,
-              likes: each.likes - 1,
-            };
+  const increaseLikeCount = (userId, postId) => {
+    const updatedUsers = database.map((eachUserDetails) => {
+      if (eachUserDetails.userId === userId) {
+        const updatedPosts = eachUserDetails.posts.map((eachPost) => {
+          if (eachPost.postId === postId) {
+            if (eachPost.currentUserDisliked) {
+              return {
+                ...eachPost,
+                currentUserDisliked: false,
+                disLikes: eachPost.disLikes - 1,
+                likes: eachPost.likes + 1,
+                currentUserLiked: true,
+              };
+            } else {
+              if (eachPost.currentUserLiked) {
+                return {
+                  ...eachPost,
+                  currentUserLiked: false,
+                  likes: eachPost.likes - 1,
+                };
+              }
+              return {
+                ...eachPost,
+                currentUserLiked: true,
+                likes: eachPost.likes + 1,
+              };
+            }
           }
-          return {
-            ...each,
-            currentUserLiked: false,
-            likes: each.likes - 1,
-          };
-        } else {
-          if (each.currentUserDisliked) {
-            return {
-              ...each,
-              currentUserDisliked: false,
-              disLikes: each.disLikes - 1,
-              currentUserLiked: true,
-              likes: each.likes + 1,
-            };
-          }
-          return {
-            ...each,
-            currentUserLiked: true,
-            likes: each.likes + 1,
-          };
-        }
-      } else {
-        return { ...each };
+          return eachPost;
+        });
+
+        return {
+          ...eachUserDetails,
+          posts: updatedPosts,
+        };
       }
+      return eachUserDetails;
     });
-    setPosts(updated);
+
+    setDatabase(updatedUsers);
   };
 
-  const increaseDisLikeCount = (id) => {
-    const updated = posts.map((each) => {
-      if (each.id === id) {
-        if (each.currentUserDisliked) {
-          if (each.currentUserLiked) {
-            return {
-              ...each,
-              currentUserLiked: false,
-              likes: each.likes - 1,
-              currentUserDisliked: false,
-              disLikes: each.disLikes - 1,
-            };
+  const increaseDisLikeCount = (userId, postId) => {
+    const updatedUsers = database.map((eachUserDetails) => {
+      if (eachUserDetails.userId === userId) {
+        const updatedPosts = eachUserDetails.posts.map((eachPost) => {
+          if (eachPost.postId === postId) {
+            if (eachPost.currentUserDisliked) {
+              return {
+                ...eachPost,
+                currentUserDisliked: false,
+                disLikes: eachPost.disLikes - 1,
+              };
+            } else {
+              if (eachPost.currentUserLiked) {
+                return {
+                  ...eachPost,
+                  currentUserLiked: false,
+                  likes: eachPost.likes - 1,
+                  currentUserDisliked: true,
+                  disLikes: eachPost.disLikes + 1,
+                };
+              }
+              return {
+                ...eachPost,
+                currentUserDisliked: true,
+                disLikes: eachPost.disLikes + 1,
+              };
+            }
           }
-          return {
-            ...each,
-            currentUserDisliked: false,
-            disLikes: each.disLikes - 1,
-          };
-        } else {
-          if (each.currentUserLiked) {
-            return {
-              ...each,
-              currentUserLiked: false,
-              likes: each.likes - 1,
-              currentUserDisliked: true,
-              disLikes: each.disLikes + 1,
-            };
-          }
-          return {
-            ...each,
-            currentUserDisliked: true,
-            disLikes: each.disLikes + 1,
-          };
-        }
-      } else {
-        return { ...each };
+          return eachPost;
+        });
+
+        return {
+          ...eachUserDetails,
+          posts: updatedPosts,
+        };
       }
+      return eachUserDetails;
     });
-    setPosts(updated);
+
+    setDatabase(updatedUsers);
   };
 
-  const addComment = (id, comment) => {
+  const addComment = (userid, postid, comment) => {
     const newComment = {
       commentId: uuidv4(),
-      commentedProfile: "current-user.jpg",
+      commentedProfile: `${currentUserData.profilePic}`,
       commentText: comment,
-      commentorName: "current user",
+      commentorName: "Pavan Marapalli", //current user name
     };
-    const updated = posts.map((each) => {
-      if (each.id === id) {
-        return { ...each, comments: [newComment, ...each.comments] };
-      } else {
-        return { ...each };
+
+    const updated = database.map((eachUserProfile) => {
+      if (eachUserProfile.userId === userid) {
+        eachUserProfile.posts.map((eachPost) => {
+          if (eachPost.postId === postid) {
+            eachPost.comments.unshift(newComment);
+            return { ...eachPost };
+          }
+          return { ...eachPost };
+        });
       }
+      return { ...eachUserProfile };
     });
 
-    setPosts(updated);
+    setDatabase(updated);
   };
 
   const userAdded = (id) => {
-    const updatedList = listOfUsers.map((each) => {
-      if (each.id === id) {
+    const updatedList = database.map((each) => {
+      if (each.userId === id) {
         return { ...each, isFriend: true };
       } else {
         return { ...each };
       }
     });
-    setlistOfUsers(updatedList);
+
+    setDatabase(updatedList);
   };
 
   const renderActiveComponent = () => {
@@ -165,22 +174,20 @@ const Home = () => {
         return (
           <>
             <CurrentUserProfile />
-            <UserBio />
+            <UserBio bio={currentUserData.userBio} />
           </>
         );
       case displayContent.displayFeed:
         return (
           <Feed
-            posts={posts}
+            database={database}
             addComment={addComment}
             increaseLikeCount={increaseLikeCount}
             increaseDisLikeCount={increaseDisLikeCount}
           />
         );
       case displayContent.displaySuggetions:
-        return (
-          <FriendSuggetions userList={listOfUsers} userAdded={userAdded} />
-        );
+        return <FriendSuggetions database={database} userAdded={userAdded} />;
       default:
         return null;
     }
@@ -189,7 +196,7 @@ const Home = () => {
   const toggleShowBio = () => settabViewShowBio((prevState) => !prevState);
 
   const mobileView = () => (
-    <>
+    <div className="mobile-view">
       <nav className="nav-menu-mobile">
         <ul className="nav-menu-list-mobile">
           <li className="nav-menu-item-mobile">
@@ -208,12 +215,17 @@ const Home = () => {
               <VscRequestChanges className="nav-bar-icon" />
             </button>
           </li>
+          <li className="nav-menu-item-mobile">
+            <button type="button">
+              <FiLogOut className="nav-bar-icon" />
+            </button>
+          </li>
         </ul>
       </nav>
       <div className="active-component-container">
         <div>{renderActiveComponent()}</div>
       </div>
-    </>
+    </div>
   );
 
   const tabView = () => (
@@ -224,15 +236,15 @@ const Home = () => {
           toggleShowBio={toggleShowBio}
         />
         {tabViewShowBio ? (
-          <UserBio />
+          <UserBio bio={currentUserData.userBio} />
         ) : (
-          <FriendSuggetions userList={listOfUsers} userAdded={userAdded} />
+          <FriendSuggetions database={database} userAdded={userAdded} />
         )}
       </div>
 
       <div className="feed">
         <Feed
-          posts={posts}
+          database={database}
           addComment={addComment}
           increaseLikeCount={increaseLikeCount}
           increaseDisLikeCount={increaseDisLikeCount}
@@ -244,12 +256,12 @@ const Home = () => {
   const screenView = () => (
     <div className="screen-view">
       <div className="user-bio">
-        <UserBio />
+        <UserBio bio={currentUserData.userBio} />
       </div>
 
       <div className="feed">
         <Feed
-          posts={posts}
+          database={database}
           addComment={addComment}
           increaseLikeCount={increaseLikeCount}
           increaseDisLikeCount={increaseDisLikeCount}
@@ -258,22 +270,22 @@ const Home = () => {
 
       <div className="friend-suggetions">
         <CurrentUserProfile />
-        <FriendSuggetions userList={listOfUsers} userAdded={userAdded} />
+        <FriendSuggetions database={database} userAdded={userAdded} />
       </div>
     </div>
   );
 
   const renderHomeView = () => {
-    if (windowWidth <= 600) {
+    if (windowWidth <= 700) {
       return mobileView();
-    } else if (windowWidth > 600 && windowWidth < 1110) {
+    } else if (windowWidth > 700 && windowWidth < 1110) {
       return tabView();
     } else {
       return screenView();
     }
   };
 
-  return <div className="main-container">{renderHomeView()}</div>;
+  return renderHomeView();
 };
 
 export default Home;

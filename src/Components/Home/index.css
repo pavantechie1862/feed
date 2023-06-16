@@ -1,26 +1,24 @@
-.main-container {
-  height: 100vh;
-  background-color: #000;
-}
-
 .user-bio {
   overflow-y: auto;
-  flex-grow: 1;
-  padding: 10px;
+  padding: 10px 10px 0px 0px;
+  max-width: 400px;
+  height: 100%;
 }
 
 .feed {
   overflow-y: auto;
-  flex-grow: 1;
+  padding: 10px 0px;
+  max-width: 450px;
 }
 
 .friend-suggetions {
   overflow-y: auto;
-  flex-grow: 1;
   padding: 10px;
-  min-width: 450px;
+  max-width: 400px;
 }
 
+.active-component-container::-webkit-scrollbar,
+.mobile-view::-webkit-scrollbar,
 .user-bio::-webkit-scrollbar,
 .feed::-webkit-scrollbar,
 .friend-suggetions::-webkit-scrollbar,
@@ -40,9 +38,16 @@
   height: 100%;
 }
 
+/* Mobile view */
+.mobile-view {
+  height: 100%;
+  overflow: auto;
+}
+
 /* //*Nav bar stylings */
 .nav-menu-mobile {
-  width: 100%;
+  width: 100vw;
+  height: 90px;
 }
 
 .nav-menu-list-mobile {
@@ -71,8 +76,9 @@
   color: #f0f8ff;
 }
 
-/* //* styling in mobile view */
-
-/* .active-component-container {
-  
-} */
+.active-component-container {
+  height: calc(100vh - 90px);
+  overflow-y: auto;
+  padding: 10px;
+  margin: 0px auto;
+}

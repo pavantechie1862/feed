@@ -13,7 +13,7 @@
 .current-username {
   text-transform: capitalize;
   font-weight: 600;
-  font-size: 30px;
+  font-size: 20px;
   margin-bottom: 20px;
 }
 
@@ -25,9 +25,9 @@
 }
 
 .bio-toggle-btn {
-  color: white;
-  border: 1px solid white;
+  color: #60aede;
+  border: 1px solid #60aede;
   padding: 4px 10px;
-  margin-top: 10px;
+  margin: 10px 10px 0px 0px;
   border-radius: 4px;
 }
