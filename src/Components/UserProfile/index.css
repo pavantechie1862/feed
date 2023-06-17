@@ -45,6 +45,7 @@
   max-width: 400px;
   height: calc(100vh - 92px);
 }
+
 .others-post-cintainer {
   overflow-y: auto;
   max-width: 450px;
@@ -62,6 +63,18 @@
 
 .others-nav-link {
   color: white;
+}
+
+@media (max-width: 600px) {
+  .others-post-cintainer,
+  .others-profile-container,
+  .others-bio-cintainer {
+    width: 100%;
+  }
+
+  /* .others-profile-container {
+    padding: 10px;
+  } */
 }
 
 .others-bio-cintainer::-webkit-scrollbar,

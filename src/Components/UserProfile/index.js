@@ -5,9 +5,11 @@ import Feed from "../Feed";
 import { DB } from "../../database";
 import { v4 as uuidv4 } from "uuid";
 import { MdTimeline, MdOutlinePhotoAlbum } from "react-icons/md";
-import { FcAbout } from "react-icons/fc";
-import { FaUserFriends } from "react-icons/fa";
-import { SlUserFollowing } from "react-icons/sl";
+
+// import { FcAbout } from "react-icons/fc";
+// import { FaUserFriends } from "react-icons/fa";
+// import { SlUserFollowing } from "react-icons/sl";
+
 import "./index.css";
 
 const activeOptionDetails = {
@@ -218,9 +220,7 @@ const UserProfile = (props) => {
                     <MdTimeline />
                   </button>
                 </li>
-                <li className="others-profile-icon">
-                  <FcAbout />
-                </li>
+
                 <li>
                   <button
                     className="others-profile-icon"
@@ -230,16 +230,10 @@ const UserProfile = (props) => {
                     <MdOutlinePhotoAlbum />
                   </button>
                 </li>
-                <li className="others-profile-icon">
-                  <FaUserFriends />
-                </li>
               </ul>
               <ul className="nav-buttons">
-                <li className="others-profile-icon">
-                  <SlUserFollowing>1233</SlUserFollowing>
-                </li>
                 <li>
-                  <button className="others-profile-btn">Add Friend</button>
+                  <button className="others-profile-btn">+</button>
                 </li>
                 <li>
                   <button
