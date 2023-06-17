@@ -21,7 +21,7 @@ Here are some images of the application :
 
         - npm install react@18.2.0 react-dom@18.2.0
         - npm install react-icons@4.9.0
-        - npm install react-router-dom@4.2.2
+        - npm install react-router-dom@4.2.2 or @5.2.0
 
   once all the dependencies installed run **npm start** to start the server
 
